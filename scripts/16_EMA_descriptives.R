@@ -210,7 +210,7 @@ plot_names_2 <- c('prop_activity_eating' = "Eating",
                   'prop_activity_chores' = "Chores",
                   'prop_activity_other' = "Other")
 
-prop_activities <- a %>%
+prop_activities <- analytic_sample_1 %>%
   group_by(id) %>%
   summarise(nr_entries = n(),
             prop_activity_eating = sum(activity_eating_imp, na.rm = T)/nr_entries*100,
@@ -250,7 +250,7 @@ plot_names_3 <- c('prop_social_context_alone' = "Alone",
                   'prop_social_context_stranger' = "With stranger",
                   'prop_social_context_other' = "Other")
 
-prop_social_context <- a %>%
+prop_social_context <- analytic_sample_1 %>%
   group_by(id) %>%
   summarise(nr_entries = n(),
             prop_social_context_alone = sum(social_context_alone_imp, na.rm = T)/nr_entries*100,
