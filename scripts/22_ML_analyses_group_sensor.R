@@ -681,3 +681,30 @@ write_rds(combined_roc_sens, here("data", "group models (sensor data)", "group_c
 
 if(!file.exists(here("outputs", "group models (sensor data)", "group_combined_roc_sens.png"))) ggsave(combined_roc_sens, filename = here("outputs", "group models (sensor data)", "group_combined_roc_sens.png"),
                                                                                                     dpi = 320, height = 8, width = 10)
+
+### set up auc comparison
+
+models <- c("Random Forest", "Penalised Logistic Regression", "XGBoost", "Support Vector Machine")
+auc <- c(0.952, 0.944, 0.933, 0.865)
+lower_ci <- c(0.933, 0.921, 0.907, 0.822)
+upper_ci <- c(0.970, 0.966, 0.959, 0.909)
+
+# combine data into a data frame
+data <- tibble(models, auc, lower_ci, upper_ci) %>%
+  mutate(models = fct_inorder(models))
+
+compare_auc_sens <- ggplot(data, aes(x = models, y = auc)) +
+  geom_pointrange(aes(x = models, ymin = lower_ci, ymax = upper_ci, colour = models)) +
+  scale_color_viridis_d(option = "plasma", end = .6) +
+  xlab("Model") +
+  ylab("AUC") +
+  labs(colour = "Model") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# add error bars for confidence intervals
+segments(1:4, data$lower_ci, 1:4, data$upper_ci, col = "black", lwd = 2)
+
+ggsave(compare_auc_sens, filename = here("outputs", "group models (sensor data)", "compare_auc_sens.png"),
+       dpi = 320, height = 6, width = 9)
+

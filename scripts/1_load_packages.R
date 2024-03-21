@@ -40,8 +40,13 @@ pkgs <- c("caret",
           "themis",
           "tidymodels",
           "tidyverse",
-          "vip",
+          #"vip",
           "xgboost")
+
+# vip has changed functions since version 0.3.2 (which was initially used) - load this version specifically
+
+remotes::install_version("vip", version = "0.3.2")
+library(vip)
 
 pacman::p_load(pkgs, character.only=T)
 
